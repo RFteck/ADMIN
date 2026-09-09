@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Totem Admin - Upload Múltiplo</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f3f4f6;margin:0;padding:24px}
+h1{margin:0 0 16px}
+.card{background:#fff;padding:20px;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,.08);max-width:1000px;margin:auto}
+input,button{padding:10px;border-radius:8px;border:1px solid #d1d5db;width:100%;margin:8px 0}
+button{background:#2563eb;color:#fff;border:0;font-weight:bold;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-top:20px}
+.item{background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden}
+.item img{width:100%;height:140px;object-fit:cover}
+.item .t{padding:10px;font-weight:600;text-align:center}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Painel Totem</h1>
+<input id="titulo" placeholder="Título das fotos">
+<input id="fotos" type="file" accept="image/*" multiple>
+<button onclick="adicionar()">Adicionar Fotos</button>
+<div id="galeria" class="grid"></div>
+</div>
+<script>
+const galeria=document.getElementById("galeria");
+function adicionar(){
+ const files=[...document.getElementById("fotos").files];
+ const titulo=document.getElementById("titulo").value||"Sem título";
+ if(!files.length){alert("Selecione uma ou mais fotos.");return;}
+ files.forEach(file=>{
+   const r=new FileReader();
+   r.onload=e=>{
+     const card=document.createElement("div");
+     card.className="item";
+     card.innerHTML=`<img src="${e.target.result}"><div class="t">${titulo}</div>`;
+     galeria.appendChild(card);
+   };
+   r.readAsDataURL(file);
+ });
+ document.getElementById("fotos").value="";
+}
+</script>
+</body>
+</html>
